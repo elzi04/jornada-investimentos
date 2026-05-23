@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protótipo App CAIXA – Jornada de Investimentos</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #f0f2f5;
+    padding: 32px 16px;
+    min-height: 100vh;
+  }
+
+  h1.page-title {
+    text-align: center;
+    color: #003399;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  p.subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+    margin-bottom: 32px;
+  }
+
+  .phones-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .phone-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .phone-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #003399;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #003399;
+  }
+
+  .phone {
+    width: 220px;
+    min-height: 420px;
+    background: #fff;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,51,153,0.13), 0 2px 8px rgba(0,0,0,0.08);
+    border: 2px solid #e0e6f0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* STATUS BAR */
+  .status-bar {
+    background: #003399;
+    padding: 6px 16px 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .status-bar span { color: #fff; font-size: 9px; font-weight: 700; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #003399 0%, #0044cc 100%);
+    padding: 10px 14px 12px;
+    color: #fff;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .header-top .back { font-size: 14px; opacity: 0.8; cursor: pointer; }
+  .header-top .logo {
+    background: #F4A900;
+    color: #003399;
+    font-size: 8px;
+    font-weight: 900;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+  .header-top .title { font-size: 11px; font-weight: 700; flex: 1; }
+  .header h2 { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
+  .header p { font-size: 9px; opacity: 0.8; }
+
+  /* PERFIL BADGE */
+  .perfil-badge {
+    background: linear-gradient(90deg, #F4A900, #f0c040);
+    margin: 10px 12px 0;
+    border-radius: 8px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .perfil-badge .icon { font-size: 14px; }
+  .perfil-badge .text { flex: 1; }
+  .perfil-badge .text .label { font-size: 8px; color: #003399; font-weight: 700; text-transform: uppercase; }
+  .perfil-badge .text .value { font-size: 11px; color: #003399; font-weight: 800; }
+  .perfil-badge .produtos { font-size: 8px; color: #003399; opacity: 0.8; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 10px;
+    font-weight: 800;
+    color: #003399;
+    padding: 10px 12px 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* PRODUCT CARDS */
+  .product-card {
+    margin: 0 12px 8px;
+    background: #f0f5ff;
+    border-radius: 10px;
+    padding: 9px 10px;
+    border-left: 3px solid #003399;
+  }
+  .product-card .prod-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+  }
+  .product-card .prod-name { font-size: 11px; font-weight: 800; color: #003399; }
+  .product-card .prod-tag {
+    background: #003399;
+    color: #fff;
+    font-size: 7px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 4px;
+  }
+  .product-card .prod-desc { font-size: 9px; color: #444; margin-bottom: 6px; line-height: 1.4; }
+  .product-card .prod-info {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .prod-info-item {
+    background: #fff;
+    border-radius: 5px;
+    padding: 3px 6px;
+    font-size: 8px;
+    color: #333;
+    font-weight: 600;
+  }
+  .prod-info-item span { color: #003399; font-weight: 800; }
+  .prod-adequado {
+    margin-top: 5px;
+    font-size: 8px;
+    color: #008000;
+    font-weight: 700;
+  }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    margin-top: auto;
+    background: #003399;
+    display: flex;
+    justify-content: space-around;
+    padding: 7px 4px 10px;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+  .nav-item .nav-icon { font-size: 13px; }
+  .nav-item .nav-label { font-size: 7px; color: rgba(255,255,255,0.7); font-weight: 600; }
+  .nav-item.active .nav-label { color: #F4A900; }
+  .nav-item.active .nav-icon { filter: brightness(2); }
+
+  /* TELA 2 - DETALHE */
+  .detail-rentab {
+    background: linear-gradient(135deg, #003399, #0044cc);
+    margin: 10px 12px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .detail-rentab .rentab-label { font-size: 8px; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.5px; }
+  .detail-rentab .rentab-value { font-size: 22px; font-weight: 900; color: #F4A900; line-height: 1.2; }
+  .detail-rentab .rentab-sub { font-size: 9px; color: rgba(255,255,255,0.8); }
+
+  .info-card {
+    margin: 0 12px 8px;
+    background: #f8f9ff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e0e6f0;
+  }
+  .info-card .info-title {
+    background: #003399;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    border-bottom: 1px solid #eef0f5;
+    align-items: center;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-row .info-key { font-size: 9px; color: #666; }
+  .info-row .info-val { font-size: 9px; font-weight: 800; color: #003399; }
+
+  .explicacao-card {
+    margin: 0 12px 8px;
+    background: #fff8e6;
+    border-radius: 10px;
+    padding: 8px 10px;
+    border: 1px solid #F4A900;
+  }
+  .explicacao-card .exp-title { font-size: 9px; font-weight: 800; color: #003399; margin-bottom: 3px; }
+  .explicacao-card .exp-text { font-size: 8px; color: #444; line-height: 1.5; }
+  .fgc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #e6ffe6;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin-top: 4px;
+    font-size: 8px;
+    color: #006600;
+    font-weight: 700;
+  }
+
+  .btn-investir {
+    margin: 6px 12px 10px;
+    background: linear-gradient(90deg, #F4A900, #f0c040);
+    color: #003399;
+    font-size: 12px;
+    font-weight: 900;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  /* TELA 3 - PAINEL */
+  .painel-saldo {
+    margin: 10px 12px 0;
+    background: linear-gradient(135deg, #003399, #0055dd);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: #fff;
+  }
+  .painel-saldo .ps-label { font-size: 8px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
+  .painel-saldo .ps-value { font-size: 20px; font-weight: 900; color: #F4A900; }
+  .painel-saldo .ps-rend { font-size: 9px; color: rgba(255,255,255,0.9); margin-top: 3px; }
+  .painel-saldo .ps-rend span { color: #7dff7d; font-weight: 800; }
+
+  .acao-buttons {
+    display: flex;
+    gap: 8px;
+    margin: 8px 12px;
+  }
+  .acao-btn {
+    flex: 1;
+    background: #003399;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    text-align: center;
+    padding: 7px 4px;
+    border-radius: 8px;
+  }
+  .acao-btn.secondary {
+    background: #f0f5ff;
+    color: #003399;
+    border: 1.5px solid #003399;
+  }
+
+  .meu-invest-card {
+    margin: 0 12px 6px;
+    background: #f0f5ff;
+    border-radius: 10px;
+    padding: 9px 10px;
+    border-left: 3px solid #F4A900;
+  }
+  .mic-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .mic-name { font-size: 10px; font-weight: 800; color: #003399; }
+  .mic-status { font-size: 8px; background: #e6ffe6; color: #006600; padding: 2px 5px; border-radius: 4px; font-weight: 700; }
+  .mic-info { display: flex; gap: 8px; }
+  .mic-info-item { flex: 1; }
+  .mic-info-item .mi-label { font-size: 7px; color: #666; }
+  .mic-info-item .mi-value { font-size: 10px; font-weight: 800; color: #003399; }
+  .mic-info-item .mi-value.green { color: #008000; }
+
+  /* TELA 1 EXTRAS */
+  .saldo-card {
+    margin: 8px 12px 0;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+  .saldo-card .sc-label { font-size: 8px; color: rgba(255,255,255,0.8); }
+  .saldo-card .sc-value { font-size: 18px; font-weight: 900; color: #fff; }
+
+  .servicos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 8px 12px;
+  }
+  .servico-item {
+    background: #f0f5ff;
+    border-radius: 8px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  .servico-item .si-icon { font-size: 16px; margin-bottom: 3px; }
+  .servico-item .si-label { font-size: 8px; color: #003399; font-weight: 700; }
+  .servico-item.highlight { background: #003399; }
+  .servico-item.highlight .si-label { color: #F4A900; }
+
+  .scrollable { overflow-y: auto; flex: 1; }
+
+  /* ARROW */
+  .arrow-container {
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+    color: #003399;
+    font-size: 28px;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">PROTÓTIPO — APP CAIXA · JORNADA DE INVESTIMENTOS</h1>
+<p class="subtitle">Modelo de referência para recriação no Figma · Elzi Luciene Ribeiro Ferreira · CESOB</p>
+
+<div class="phones-row">
+
+  <!-- TELA 1 -->
+  <div class="phone-wrap">
+    <div class="phone-label">Tela 1 — Início</div>
+    <div class="phone">
+      <div class="status-bar"><span>19:59</span><span>●●● 📶 🔋</span></div>
+      <div class="header">
+        <div class="header-top">
+          <span class="logo">X</span>
+          <span class="title">Saldo cartão · Ag. 0821 Cc. 584404318-5</span>
+        </div>
+        <div class="saldo-card">
+          <div class="sc-label">Saldo atual</div>
+          <div class="sc-value">R$ ••••••</div>
+        </div>
+      </div>
+      <!-- MELHORIA 1: Badge de perfil -->
+      <div class="perfil-badge">
+        <div class="icon">👤</div>
+        <div class="text">
+          <div class="label">Seu perfil de investidor</div>
+          <div class="value">Conservador</div>
+        </div>
+        <div class="produtos">Ver produtos adequados →</div>
+      </div>
+      <div class="section-title">Serviços</div>
+      <div class="servicos-grid">
+        <div class="servico-item">
+          <div class="si-icon">💸</div>
+          <div class="si-label">Pegar emprestado</div>
+        </div>
+        <div class="servico-item">
+          <div class="si-icon">📋</div>
+          <div class="si-label">Pagar conta</div>
+        </div>
+        <div class="servico-item">
+          <div class="si-icon">◆</div>
+          <div class="si-label">Fazer Pix</div>
+        </div>
+        <!-- MELHORIA 2: Investir em destaque -->
+        <div class="servico-item highlight">
+          <div class="si-icon">📈</div>
+          <div class="si-label">Investir</div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item active"><div class="nav-icon">🏠</div><div class="nav-label">Início</div></div>
+        <div class="nav-item"><div class="nav-icon">📊</div><div class="nav-label">Extrato</div></div>
+        <div class="nav-item"><div class="nav-icon">◆</div><div class="nav-label">Pix</div></div>
+        <!-- MELHORIA: Investir no menu inferior -->
+        <div class="nav-item"><div class="nav-icon">📈</div><div class="nav-label" style="color:#F4A900;font-weight:800">Investir</div></div>
+        <div class="nav-item"><div class="nav-icon">☰</div><div class="nav-label">Menu</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-container">→</div>
+
+  <!-- TELA 2 -->
+  <div class="phone-wrap">
+    <div class="phone-label">Tela 2 — Produtos</div>
+    <div class="phone">
+      <div class="status-bar"><span>19:59</span><span>●●● 📶 🔋</span></div>
+      <div class="header">
+        <div class="header-top">
+          <span class="back">←</span>
+          <span class="logo">X</span>
+          <span class="title">Investimentos</span>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.8);margin-top:2px;">👤 Perfil: Conservador</div>
+      </div>
+      <div class="scrollable">
+        <div class="section-title">Recomendados para você</div>
+        <!-- MELHORIA: Card com descrição do produto -->
+        <div class="product-card">
+          <div class="prod-header">
+            <div class="prod-name">CDB CAIXA DI</div>
+            <div class="prod-tag">✅ Adequado</div>
+          </div>
+          <div class="prod-desc">Empréstimo ao banco com rendimento garantido. Ideal para reserva de emergência.</div>
+          <div class="prod-info">
+            <div class="prod-info-item">Rend: <span>100% CDI</span></div>
+            <div class="prod-info-item">Liquidez: <span>Diária</span></div>
+            <div class="prod-info-item">Risco: <span>Baixo</span></div>
+            <div class="prod-info-item">Mín: <span>R$200</span></div>
+          </div>
+          <div class="prod-adequado">🛡️ Garantia FGC até R$250 mil</div>
+        </div>
+        <div class="product-card">
+          <div class="prod-header">
+            <div class="prod-name">LCI CAIXA</div>
+            <div class="prod-tag">✅ Adequado</div>
+          </div>
+          <div class="prod-desc">Renda fixa isenta de IR para pessoa física. Voltada ao setor imobiliário.</div>
+          <div class="prod-info">
+            <div class="prod-info-item">Rend: <span>95% CDI</span></div>
+            <div class="prod-info-item">Liquidez: <span>No venc.</span></div>
+            <div class="prod-info-item">IR: <span>Isento</span></div>
+            <div class="prod-info-item">Mín: <span>R$1.000</span></div>
+          </div>
+          <div class="prod-adequado">🛡️ Garantia FGC até R$250 mil</div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Início</div></div>
+        <div class="nav-item"><div class="nav-icon">📊</div><div class="nav-label">Extrato</div></div>
+        <div class="nav-item"><div class="nav-icon">◆</div><div class="nav-label">Pix</div></div>
+        <div class="nav-item active"><div class="nav-icon">📈</div><div class="nav-label">Investir</div></div>
+        <div class="nav-item"><div class="nav-icon">☰</div><div class="nav-label">Menu</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-container">→</div>
+
+  <!-- TELA 3 -->
+  <div class="phone-wrap">
+    <div class="phone-label">Tela 3 — Detalhe LCI</div>
+    <div class="phone">
+      <div class="status-bar"><span>19:59</span><span>●●● 📶 🔋</span></div>
+      <div class="header">
+        <div class="header-top">
+          <span class="back">←</span>
+          <span class="logo">X</span>
+          <span class="title">LCI CAIXA DI POS</span>
+        </div>
+      </div>
+      <div class="scrollable">
+        <!-- MELHORIA: Explicação em linguagem simples -->
+        <div class="explicacao-card">
+          <div class="exp-title">💡 O que é a LCI?</div>
+          <div class="exp-text">Letra de Crédito Imobiliário — investimento de renda fixa <strong>isento de Imposto de Renda</strong> para pessoa física, com rentabilidade atrelada ao CDI.<br>
+          <span class="fgc-badge">🛡️ Garantia FGC até R$250 mil</span></div>
+        </div>
+        <div class="detail-rentab">
+          <div class="rentab-label">Rentabilidade</div>
+          <div class="rentab-value">95% CDI</div>
+          <div class="rentab-sub">≈ 12,8% ao ano · IR isento</div>
+        </div>
+        <div class="info-card">
+          <div class="info-title">Dados do produto</div>
+          <div class="info-row"><span class="info-key">Aplicação mínima</span><span class="info-val">R$ 1.000,00</span></div>
+          <div class="info-row"><span class="info-key">Vencimento</span><span class="info-val">Até abr/2031</span></div>
+          <div class="info-row"><span class="info-key">Resgate</span><span class="info-val">No vencimento</span></div>
+          <div class="info-row"><span class="info-key">Imposto de Renda</span><span class="info-val" style="color:#008000">Isento ✓</span></div>
+          <div class="info-row"><span class="info-key">Adequado ao perfil</span><span class="info-val" style="color:#008000">✅ Conservador</span></div>
+        </div>
+        <div class="btn-investir">Investir agora</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-container">→</div>
+
+  <!-- TELA 4 -->
+  <div class="phone-wrap">
+    <div class="phone-label">Tela 4 — Meus Investimentos</div>
+    <div class="phone">
+      <div class="status-bar"><span>19:59</span><span>●●● 📶 🔋</span></div>
+      <div class="header">
+        <div class="header-top">
+          <span class="back">←</span>
+          <span class="logo">X</span>
+          <span class="title">Meus Investimentos</span>
+        </div>
+      </div>
+      <div class="scrollable">
+        <!-- MELHORIA: Painel consolidado -->
+        <div class="painel-saldo">
+          <div class="ps-label">Total investido</div>
+          <div class="ps-value">R$ 15.430,00</div>
+          <div class="ps-rend">Rendimento total: <span>+R$ 1.243,50 (+8,8%)</span></div>
+        </div>
+        <div class="acao-buttons">
+          <div class="acao-btn">＋ Novo aporte</div>
+          <div class="acao-btn secondary">↓ Resgatar</div>
+          <div class="acao-btn secondary">📄 Informe</div>
+        </div>
+        <div class="section-title">Minha carteira</div>
+        <div class="meu-invest-card">
+          <div class="mic-header">
+            <div class="mic-name">CDB CAIXA DI</div>
+            <div class="mic-status">Ativo ✓</div>
+          </div>
+          <div class="mic-info">
+            <div class="mic-info-item"><div class="mi-label">Aplicado</div><div class="mi-value">R$10.000</div></div>
+            <div class="mic-info-item"><div class="mi-label">Saldo atual</div><div class="mi-value">R$10.830</div></div>
+            <div class="mic-info-item"><div class="mi-label">Rendimento</div><div class="mi-value green">+8,3%</div></div>
+          </div>
+        </div>
+        <div class="meu-invest-card">
+          <div class="mic-header">
+            <div class="mic-name">LCI CAIXA</div>
+            <div class="mic-status">Ativo ✓</div>
+          </div>
+          <div class="mic-info">
+            <div class="mic-info-item"><div class="mi-label">Aplicado</div><div class="mi-value">R$5.000</div></div>
+            <div class="mic-info-item"><div class="mi-label">Saldo atual</div><div class="mi-value">R$5.430</div></div>
+            <div class="mic-info-item"><div class="mi-label">Rendimento</div><div class="mi-value green">+8,6%</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label">Início</div></div>
+        <div class="nav-item"><div class="nav-icon">📊</div><div class="nav-label">Extrato</div></div>
+        <div class="nav-item"><div class="nav-icon">◆</div><div class="nav-label">Pix</div></div>
+        <div class="nav-item active"><div class="nav-icon">📈</div><div class="nav-label">Investir</div></div>
+        <div class="nav-item"><div class="nav-icon">☰</div><div class="nav-label">Menu</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
